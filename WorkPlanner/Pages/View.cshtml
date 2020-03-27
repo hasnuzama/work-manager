@@ -1,0 +1,76 @@
+﻿@page
+@model WorkPlanner.ViewModel
+@using Microsoft.AspNetCore.Http
+@{
+	ViewData["Title"] = "View Work Plans";
+	string role = HttpContext.Session.GetString("Role") ?? string.Empty;
+	string disable = string.Empty;
+	if (string.IsNullOrWhiteSpace(role))
+	{
+		Response.Redirect("Index");
+	}
+	else if (role.Equals("employee"))
+	{
+		disable = "disabled";
+	}
+}
+@Html.AntiForgeryToken()
+
+
+<head>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/datepicker.css" />
+	<link rel="stylesheet" href="~/lib/toastr/toastr.css" />
+	<script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+	<script src="~/lib/toastr/toastr.min.js"></script>
+	<script src="~/js/view.js"></script>
+</head>
+
+<form>
+	<div class="row">
+		<!-- Emloyee dropdown -->
+		<div class="dropdown col-sm-2">
+			<select class="browser-default custom-select" id="employee" name="employee" @disable>
+				<option value="-1">Select Employee</option>
+				@if (Model.Users != null)
+				{
+					@for (int i = 0; i < Model.Users.Count; i++)
+					{
+						<option value="@Model.Users[i].UserId">@Model.Users[i].Name</option>
+					}
+				}
+			</select>
+		</div>
+
+		<!-- Date picker -->
+		<div class='col-sm-3'>
+			<div class="form-group">
+				<div class='input-group date'>
+					<input type='text' class="form-control" id='datepicker' name="datepicker" />
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Filter button -->
+		<div class='col-sm-1'>
+			<input type="button" id="submit" class="btn btn-primary" value="Submit">
+			<input name="__RequestVerificationToken" type="hidden" value="CfDJ8KW5cuB058RCnNyZSLI7AUjUAtTwe54jQ4Z9Goyn3WKPcpVFYSFUM5J-JDFC3E-MZIUcyR0UnbrvrC_sHv6MbUONStuIMhqDc7i00pQiGkrzf3hK6t5gZFVrjUpyAcargow4zvKU_ISjdPfoLTNF588" />
+		</div>
+	</div>
+
+	<table class="table">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Project</th>
+				<th scope="col">Task</th>
+				<th scope="col">Estimated hours</th>
+				<th scope="col">Pinestem task id</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</form>

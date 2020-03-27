@@ -1,0 +1,30 @@
+﻿@page
+@model IndexModel
+@{
+	ViewData["Title"] = "Login page";
+}
+@Html.AntiForgeryToken()
+
+<head>
+	<link rel="stylesheet" href="~/css/login.css" />
+	<link rel="stylesheet" href="~/lib/toastr/toastr.css" />
+	<script src="~/lib/toastr/toastr.min.js"></script>
+	<script src="~/js/index.js"></script>
+</head>
+
+<div class="wrapper fadeInDown">
+	<div id="formContent">
+		<!-- Icon -->
+		<div class="fadeIn first">
+			<img src="~/images/user.png" id="icon" alt="User Icon" />
+		</div>
+
+		<!-- Login Form -->
+		<form>
+			<input type="text" id="email" class="fadeIn second" name="email" placeholder="Email">
+			<input type="password" id="password" class="fadeIn third" name="password" placeholder="Password">
+			<input type="button" id="login" class="fadeIn fourth" name="login" value="Log In" >
+			<input name="__RequestVerificationToken" type="hidden" value="CfDJ8KW5cuB058RCnNyZSLI7AUjUAtTwe54jQ4Z9Goyn3WKPcpVFYSFUM5J-JDFC3E-MZIUcyR0UnbrvrC_sHv6MbUONStuIMhqDc7i00pQiGkrzf3hK6t5gZFVrjUpyAcargow4zvKU_ISjdPfoLTNF588" />
+		</form>
+	</div>
+</div>

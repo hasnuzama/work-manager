@@ -1,0 +1,122 @@
+﻿@page
+@model WorkPlanner.CreateModel
+@using Microsoft.AspNetCore.Http
+@{
+	ViewData["Title"] = "Create Work Plan";
+	// Checking authentication
+	string role = HttpContext.Session.GetString("Role");
+	if (string.IsNullOrWhiteSpace(role))
+	{
+		Response.Redirect("Index");
+	}
+}
+@Html.AntiForgeryToken()
+
+<head>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/datepicker.css" />
+	<link rel="stylesheet" href="~/css/create.css" />
+	<link rel="stylesheet" href="~/lib/toastr/toastr.css" />
+	<script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+	<script src="~/lib/toastr/toastr.min.js"></script>
+	<script src="~/js/create.js"></script>
+</head>
+
+<!-- Editable table -->
+<form>
+	<div class="card-body">
+		<div id="table" class="table-editable">
+			<table class="table table-bordered table-responsive-md text-center">
+				<thead class="thead-dark">
+					<tr>
+						<th class="text-center">Project Name</th>
+						<th class="text-center">Task Description</th>
+						<th class="text-center">Estimated Hours</th>
+						<th class="text-center">PineStem Task ID</th>
+						<th class="text-center"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td>
+							<span class="text-success table-add">
+								<button type="button"
+										class="btn btn-success btn-rounded btn-sm my-0">
+									Add
+								</button>
+							</span>
+							<span class="table-remove">
+								<button type="button"
+										class="btn btn-danger btn-rounded btn-sm my-0">
+									Remove
+								</button>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td>
+							<span class="text-success table-add">
+								<button type="button"
+										class="btn btn-success btn-rounded btn-sm my-0">
+									Add
+								</button>
+							</span>
+							<span class="table-remove">
+								<button type="button"
+										class="btn btn-danger btn-rounded btn-sm my-0">
+									Remove
+								</button>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td class="pt-3-half" contenteditable="true"></td>
+						<td>
+							<span class="text-success table-add">
+								<button type="button"
+										class="btn btn-success btn-rounded btn-sm my-0">
+									Add
+								</button>
+							</span>
+							<span class="table-remove">
+								<button type="button"
+										class="btn btn-danger btn-rounded btn-sm my-0">
+									Remove
+								</button>
+							</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-9">
+					</div>
+					<div class="form-group col-sm-2">
+						<div class='input-group date text-right'>
+							<input type='text' class="form-control text-right" id='datepicker' name="datepicker" />
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<div class="col-sm-1">
+						<input type="button" id="submit" class="btn btn-primary" value="Submit">
+						<input name="__RequestVerificationToken" type="hidden" value="CfDJ8KW5cuB058RCnNyZSLI7AUjUAtTwe54jQ4Z9Goyn3WKPcpVFYSFUM5J-JDFC3E-MZIUcyR0UnbrvrC_sHv6MbUONStuIMhqDc7i00pQiGkrzf3hK6t5gZFVrjUpyAcargow4zvKU_ISjdPfoLTNF588" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<!-- Editable table -->
