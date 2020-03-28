@@ -8,7 +8,7 @@ namespace WorkPlanner.DAL
 {
 	public class Database
 	{
-		private static string _connectionString = "Server=localhost;Port=3306;Database=work_manager;Uid=root;Pwd=raviteja2015;";
+		private static string _connectionString = "Server=localhost;Port=3306;Database=work_manager;Uid=root;Pwd=ha;";
 
 		public Database()
 		{
@@ -95,7 +95,7 @@ namespace WorkPlanner.DAL
 				for (int i = 0; i < workPlans.Count; i++)
 				{
 					command.CommandText = $@"insert into
-							work_plans(user_id,work_date,task_name,project_name,estimated_hours,pinestem_task_id. created_on)
+							work_plans(user_id,work_date,task_name,project_name,estimated_hours,pinestem_task_id,created_on)
 						values
 							(@UserId,@WorkDate,@TaskName,@ProjectName,@EstimatedHours,@PineStemTaskId, @CreatedOn)";
 					command.Parameters.Clear();
