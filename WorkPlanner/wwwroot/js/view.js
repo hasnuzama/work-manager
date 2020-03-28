@@ -8,6 +8,28 @@
         0: 'Something went wrong. Please contact administrator.'
     }
 
+    function formatDate(dataAsString) {
+        var date = new Date(dataAsString);
+        var year = date.getFullYear();
+        var day = date.getDate();
+        var mm = (date.getMonth() + 1);
+        if (day < 10)
+            day = "0" + day;
+        if (mm < 10)
+            mm = "0" + mm;
+        var curDate = year + "-" + mm + "-" + day;
+        var hours = date.getHours()
+        var minutes = date.getMinutes()
+        var seconds = date.getSeconds();
+        if (hours < 10)
+            hours = "0" + hours;
+        if (minutes < 10)
+            minutes = "0" + minutes;
+        if (seconds < 10)
+            seconds = "0" + seconds;
+        return curDate + " " + hours + ":" + minutes + ":" + seconds;
+    }
+
     $("#datepicker").datepicker({
         format: "yyyy-mm-dd",
         setDate: "now",
@@ -39,14 +61,14 @@
                     var html = "";
                     for (var i = 0; i < result.Results.length; i++) {
                         html += "<tr>" +
-                            "<th scope=\"row\">" + (i + 1) + "</th>" +
                             "<td>" + result.Results[i].ProjectName + "</td>" +
                             "<td>" + result.Results[i].TaskDetails + "</td>" +
                             "<td>" + result.Results[i].EstimatedHours + "</td>" +
                             "<td>" + result.Results[i].PineStemTaskID + "</td>" +
+                            "<td>" + formatDate(result.Results[i].CreatedOn) + "</td>" +
                             "</tr>";
                     }
-                    $("tbody").append(html);
+                    $("tbody.work-plans").append(html);
                 }
 
             }

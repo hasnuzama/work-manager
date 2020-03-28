@@ -91,12 +91,13 @@ namespace WorkPlanner.DAL
 				myTrans = conn.BeginTransaction();
 				command = new MySqlCommand();
 				command.Transaction = myTrans;
+				DateTime currentTime = DateTime.Now;
 				for (int i = 0; i < workPlans.Count; i++)
 				{
 					command.CommandText = $@"insert into
-							work_plans(user_id,work_date,task_name,project_name,estimated_hours,pinestem_task_id)
+							work_plans(user_id,work_date,task_name,project_name,estimated_hours,pinestem_task_id,created_on)
 						values
-							(@UserId,@WorkDate,@TaskName,@ProjectName,@EstimatedHours,@PineStemTaskId)";
+							(@UserId,@WorkDate,@TaskName,@ProjectName,@EstimatedHours,@PineStemTaskId, @CreatedOn)";
 					command.Parameters.Clear();
 					command.Parameters.AddWithValue("UserId", workPlans[i].UserId);
 					command.Parameters.AddWithValue("WorkDate", workPlans[i].WorkDate);
@@ -104,6 +105,7 @@ namespace WorkPlanner.DAL
 					command.Parameters.AddWithValue("ProjectName", workPlans[i].ProjectName);
 					command.Parameters.AddWithValue("EstimatedHours", workPlans[i].EstimatedHours);
 					command.Parameters.AddWithValue("PineStemTaskId", workPlans[i].PineStemTaskID);
+					command.Parameters.AddWithValue("CreatedOn", currentTime);
 					command.Connection = conn;
 					count += command.ExecuteNonQuery();
 				}
@@ -128,7 +130,7 @@ namespace WorkPlanner.DAL
 			{
 				objResults = new List<WorkPlan>();
 				WorkPlan objResult = null;
-				MySqlCommand command = new MySqlCommand("select task_name, project_name, estimated_hours, pinestem_task_id from work_plans where user_id=@UserId and work_date=@WorkDate", conn);
+				MySqlCommand command = new MySqlCommand("select task_name, project_name, estimated_hours, pinestem_task_id, created_on from work_plans where user_id=@UserId and work_date=@WorkDate", conn);
 				command.Parameters.AddWithValue("UserId", userId);
 				command.Parameters.AddWithValue("WorkDate", workDate.Date);
 				conn.Open();
@@ -140,6 +142,7 @@ namespace WorkPlanner.DAL
 					objResult.ProjectName = Convert.ToString(reader["project_name"]);
 					objResult.EstimatedHours = Convert.ToString(reader["estimated_hours"]);
 					objResult.PineStemTaskID = Convert.ToString(reader["pinestem_task_id"]);
+					objResult.CreatedOn = Convert.ToDateTime(reader["created_on"]);
 					objResults.Add(objResult);
 				}
 			}

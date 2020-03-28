@@ -27,6 +27,7 @@ namespace WorkPlanner.Models
 		public string PineStemTaskID { get; set; }
 		public UInt32 UserId { get; set; }
 		public DateTime WorkDate { get; set; }
+		public DateTime CreatedOn {get; set;}
 	}
 
 	public class WPResponse
