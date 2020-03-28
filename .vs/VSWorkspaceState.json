@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\WorkPlanner",
+    "\\WorkPlanner\\.config",
+    "\\WorkPlanner\\DAL",
+    "\\WorkPlanner\\Helpers",
+    "\\WorkPlanner\\Models",
+    "\\WorkPlanner\\Pages",
+    "\\WorkPlanner\\Properties",
+    "\\WorkPlanner\\wwwroot"
+  ],
+  "PreviewInSolutionExplorer": false
+}
