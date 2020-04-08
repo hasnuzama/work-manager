@@ -60,4 +60,8 @@ namespace WorkPlanner.Models
 		SESSION_NOT_FOUND = 1003,
 		UNAUTHORIZED = 1004
 	}
+	public class ConnectionModel
+	{
+		public string ConnectionString { get; set; }
+	}
 }
