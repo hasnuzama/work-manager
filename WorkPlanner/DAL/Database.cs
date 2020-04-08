@@ -1,5 +1,8 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using WorkPlanner.Helpers;
 using WorkPlanner.Models;
@@ -8,19 +11,13 @@ namespace WorkPlanner.DAL
 {
 	public class Database
 	{
-		private static string _connectionString = "Server=localhost;Port=3306;Database=work_manager;Uid=root;Pwd=ha;";
 
-		public Database()
+		private static string _connectionString = null;
+
+		public Database(string connection)
 		{
-			// TODO : Deprecate this after implementing the functionality of reading connection string from appsettings.
-			// TODO : Make methods as non static.
+			_connectionString = connection;
 		}
-
-		public Database(string connectionString)
-		{
-			_connectionString = connectionString;
-		}
-
 		public static User GetUser(string email, string password)
 		{
 			MySqlConnection conn = new MySqlConnection(_connectionString);
@@ -29,7 +26,7 @@ namespace WorkPlanner.DAL
 			{
 				MySqlCommand command = new MySqlCommand("select user_id, role from users where email=@Email and `password`=@Password", conn);
 				command.Parameters.AddWithValue("Email", email);
-				command.Parameters.AddWithValue("Password", SecurityHelper.CalculatePasswordHash(password));
+				command.Parameters.AddWithValue("Password", password);
 				conn.Open();
 				var reader = command.ExecuteReader();
 				while (reader.Read())
@@ -42,6 +39,7 @@ namespace WorkPlanner.DAL
 			}
 			catch (Exception)
 			{
+
 			}
 			finally
 			{
