@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using MySql.Data.MySqlClient;
 using WorkPlanner.Helpers;
 using WorkPlanner.Models;
@@ -8,7 +9,7 @@ namespace WorkPlanner.DAL
 {
 	public class Database
 	{
-		private static string _connectionString = "Server=localhost;Port=3306;Database=work_manager;Uid=root;Pwd=ha;";
+		private static string _connectionString = "Server=localhost;Port=3306;Database=work_manager;Uid=root;Pwd=tech;";
 
 		public Database()
 		{
@@ -29,7 +30,7 @@ namespace WorkPlanner.DAL
 			{
 				MySqlCommand command = new MySqlCommand("select user_id, role from users where email=@Email and `password`=@Password", conn);
 				command.Parameters.AddWithValue("Email", email);
-				command.Parameters.AddWithValue("Password", SecurityHelper.CalculatePasswordHash(password));
+				command.Parameters.AddWithValue("Password", password);
 				conn.Open();
 				var reader = command.ExecuteReader();
 				while (reader.Read())
@@ -122,31 +123,75 @@ namespace WorkPlanner.DAL
 			return count;
 		}
 
-		public static List<WorkPlan> GetWorkplans(int userId, DateTime workDate)
+		public static List<WorkPlan> GetWorkplans(string[] userId, DateTime workDate, int intUserId)
 		{
 			MySqlConnection conn = new MySqlConnection(_connectionString);
 			List<WorkPlan> objResults = null;
 			try
 			{
-				objResults = new List<WorkPlan>();
-				WorkPlan objResult = null;
-				MySqlCommand command = new MySqlCommand("select task_name, project_name, estimated_hours, pinestem_task_id, created_on from work_plans where user_id=@UserId and work_date=@WorkDate", conn);
-				command.Parameters.AddWithValue("UserId", userId);
-				command.Parameters.AddWithValue("WorkDate", workDate.Date);
-				conn.Open();
-				var reader = command.ExecuteReader();
-				while (reader.Read())
+				    objResults = new List<WorkPlan>();
+				   WorkPlan objResult = null;
+					var ID = userId[0];
+					var dd = workDate.Date.Day;
+					var mm = workDate.Date.Month;
+					var yyyy = workDate.Date.Year;
+					var _date = yyyy + "-" + mm + "-" + dd;
+				if (ID == null && intUserId!=0)
 				{
-					objResult = new WorkPlan();
-					objResult.TaskDetails = Convert.ToString(reader["task_name"]);
-					objResult.ProjectName = Convert.ToString(reader["project_name"]);
-					objResult.EstimatedHours = Convert.ToString(reader["estimated_hours"]);
-					objResult.PineStemTaskID = Convert.ToString(reader["pinestem_task_id"]);
-					objResult.CreatedOn = Convert.ToDateTime(reader["created_on"]);
-					objResults.Add(objResult);
+					
+					
+
+					string Query = "SELECT users.name, wp.task_name,wp.project_name,wp.estimated_hours,wp.pinestem_task_id,wp.created_on FROM work_plans AS wp LEFT JOIN users AS users ON users.user_id = wp.user_id where wp.user_id in (" + intUserId + ")  and  wp.work_date BETWEEN    '" + _date + "' AND '" + _date + "'";
+					MySqlCommand command = new MySqlCommand(Query, conn);
+					//command.Parameters.AddWithValue("UserId", i);
+					command.Parameters.AddWithValue("WorkDate", workDate.Date);
+					conn.Open();
+					var reader = command.ExecuteReader();
+
+					while (reader.Read())
+					{
+						objResult = new WorkPlan();
+						objResult.EmployeeName = Convert.ToString(reader["name"]);
+						objResult.TaskDetails = Convert.ToString(reader["task_name"]);
+						objResult.ProjectName = Convert.ToString(reader["project_name"]);
+						objResult.EstimatedHours = Convert.ToString(reader["estimated_hours"]);
+						objResult.PineStemTaskID = Convert.ToString(reader["pinestem_task_id"]);
+						objResult.CreatedOn = Convert.ToDateTime(reader["created_on"]);
+						objResults.Add(objResult);
+					}
+
 				}
+
+				else
+				{
+					
+
+					string Query = "SELECT users.name, wp.task_name,wp.project_name,wp.estimated_hours,wp.pinestem_task_id,wp.created_on FROM work_plans AS wp LEFT JOIN users AS users ON users.user_id = wp.user_id where wp.user_id in (" + ID + ")  and  wp.work_date BETWEEN    '" + _date + "' AND '" + _date + "'";
+					MySqlCommand command = new MySqlCommand(Query, conn);
+					//command.Parameters.AddWithValue("UserId", i);
+					command.Parameters.AddWithValue("WorkDate", workDate.Date);
+					conn.Open();
+					var reader = command.ExecuteReader();
+
+					while (reader.Read())
+					{
+						objResult = new WorkPlan();
+						objResult.EmployeeName = Convert.ToString(reader["name"]);
+						objResult.TaskDetails = Convert.ToString(reader["task_name"]);
+						objResult.ProjectName = Convert.ToString(reader["project_name"]);
+						objResult.EstimatedHours = Convert.ToString(reader["estimated_hours"]);
+						objResult.PineStemTaskID = Convert.ToString(reader["pinestem_task_id"]);
+						objResult.CreatedOn = Convert.ToDateTime(reader["created_on"]);
+						objResults.Add(objResult);
+					}
+
+				}
+				  			
+			     
+				
+				
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 			}
 			finally

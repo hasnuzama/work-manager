@@ -30,6 +30,7 @@
         return curDate + " " + hours + ":" + minutes + ":" + seconds;
     }
 
+
     $("#datepicker").datepicker({
         format: "yyyy-mm-dd",
         setDate: "now",
@@ -43,8 +44,9 @@
     $("#submit").click(function () {
         var userId = $("#employee").val();
         var date = $("#datepicker").val();
+        var all = 0;
         $.ajax({
-            url: '?handler=WorkPlans&userId=' + userId + '&date=' + date,
+            url: '?handler=WorkPlans&userId=' + userId + '&date=' + date +'&all='+all,
             type: 'get',
             contentType: 'application/json; charset=utf-8',
             headers: {
@@ -61,6 +63,7 @@
                     var html = "";
                     for (var i = 0; i < result.Results.length; i++) {
                         html += "<tr>" +
+                            "<td>" + result.Results[i].EmployeeName + "</td>" +
                             "<td>" + result.Results[i].ProjectName + "</td>" +
                             "<td>" + result.Results[i].TaskDetails + "</td>" +
                             "<td>" + result.Results[i].EstimatedHours + "</td>" +
@@ -78,4 +81,10 @@
         });
     });
 
+    $('#employee').multiselect({
+        includeSelectAllOption: true
+    }); 
 });
+
+
+
