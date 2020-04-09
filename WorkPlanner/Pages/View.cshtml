@@ -17,20 +17,22 @@
 @Html.AntiForgeryToken()
 
 
-<head>
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/datepicker.css" />
-	<link rel="stylesheet" href="~/lib/toastr/toastr.css" />
-	<script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
-	<script src="~/lib/toastr/toastr.min.js"></script>
-	<script src="~/js/view.js"></script>
-</head>
+    <head>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/datepicker.css" />
+        <link rel="stylesheet" href="~/lib/toastr/toastr.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-select.css" />
+        <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+        <script src="~/lib/toastr/toastr.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap-select.js"></script>
+        <script src="~/js/view.js"></script>
+    </head>
 
 <form>
 	<div class="row">
 		<!-- Emloyee dropdown -->
 		<div class="dropdown col-sm-2">
-			<select class="browser-default custom-select" id="employee" name="employee" @disable>
-				<option value="-1">Select Employee</option>
+			<select multiple="multiple" id="employee" name="employee" @disable >
+				
 				@if (Model.Users != null)
 				{
 					@for (int i = 0; i < Model.Users.Count; i++)
@@ -62,13 +64,14 @@
 
 	<table class="table">
 		<thead class="thead-dark">
-			<tr>
-				<th scope="col">Project</th>
-				<th scope="col">Task</th>
-				<th scope="col">Estimated hours</th>
-				<th scope="col">Pinestem task id</th>
-				<th scope="col">Created on</th>
-			</tr>
+            <tr>
+                <th scope="col">Employee Name</th>
+                <th scope="col">Project</th>
+                <th scope="col">Task</th>
+                <th scope="col">Estimated hours</th>
+                <th scope="col">Pinestem task id</th>
+                <th scope="col">Created on</th>
+            </tr>
 		</thead>
 		<tbody class="work-plans">
 		</tbody>

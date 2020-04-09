@@ -54,17 +54,28 @@ namespace WorkPlanner
 			WPResponse response = new WPResponse(ResponseStatus.Error);
 			int intUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
 			string role = HttpContext.Session.GetString("Role");
+			
 			// Validate authentication
 			if (intUserId <= 0 || string.IsNullOrWhiteSpace(role))
 			{
 				response.ErrorCode = ErrorCode.SESSION_NOT_FOUND;
 				return new JsonResult(JsonConvert.SerializeObject(response));
 			}
-			if (role.Equals("admin") &&
-				!string.IsNullOrWhiteSpace(userId))
-			{
-				intUserId = Convert.ToInt32(userId);
-			}
+			string[] UserId = new string[] {userId};
+
+			//if (role.Equals("admin") &&
+			//	!string.IsNullOrWhiteSpace(userId))
+			//{
+			//	intUserId = Convert.ToInt32(userId);
+			//}
+
+			//// Validation
+			//if (intUserId <= 0 ||
+			//	string.IsNullOrWhiteSpace(date))
+			//{
+			//	response.ErrorCode = ErrorCode.INVALID_DATA;
+			//	return new JsonResult(JsonConvert.SerializeObject(response));
+			//}
 
 			// Validation
 			if (intUserId <= 0 ||
@@ -82,7 +93,7 @@ namespace WorkPlanner
 			}
 
 			// Obtain data
-			response.Results = Database.GetWorkplans(intUserId, dt).Cast<BaseDBModel>().ToList();
+			response.Results = Database.GetWorkplans(UserId, dt , intUserId).Cast<BaseDBModel>().ToList();
 			response.Status = ResponseStatus.Success;
 			return new JsonResult(JsonConvert.SerializeObject(response));
 		}
