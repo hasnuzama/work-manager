@@ -75,10 +75,7 @@
             setDate: "now",
             autoClose: true
         });
-
-        var date = new Date();
-        var today = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-        $("#datepicker").val(today);
+        $("#datepicker").val(new Date().toISOString().substring(0, 10));
     }
 
     function bindTable() {
