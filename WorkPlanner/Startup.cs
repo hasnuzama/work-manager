@@ -9,8 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Session;
-using WorkPlanner.DAL;
 using WorkPlanner.Models;
+using System.Configuration;
+using WorkPlanner.DAL;
 
 namespace WorkPlanner
 {
@@ -20,18 +21,17 @@ namespace WorkPlanner
 		{
 			Configuration = configuration;
 		}
-
 		public IConfiguration Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			string Connection = Configuration.GetSection("Data").GetSection("ConnectionString").Value;
-			Database dbClass = new Database(Connection);
-			services.Configure<ConnectionModel>(Configuration.GetSection("ConnectionString"));
+			ConfigData data = new ConfigData();
+			data.ConnectionString = Configuration.GetSection("Data").GetSection("ConnectionString").Value;
+			Database objData = new Database(data.ConnectionString);
+			services.Configure<ConfigData>(Configuration.GetSection("ConnectionString"));
 			services.AddSingleton<IConfiguration>(Configuration);
 			services.AddDistributedMemoryCache();
-
 			services.AddSession(options =>
 			{
 				options.IdleTimeout = TimeSpan.FromMinutes(60);

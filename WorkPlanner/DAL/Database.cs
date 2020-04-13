@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using WorkPlanner.Helpers;
 using WorkPlanner.Models;
-
 namespace WorkPlanner.DAL
 {
 	public class Database
@@ -14,9 +13,9 @@ namespace WorkPlanner.DAL
 
 		private static string _connectionString = null;
 
-		public Database(string connection)
+		public Database(string connectionString)
 		{
-			_connectionString = connection;
+			_connectionString = connectionString;
 		}
 		public static User GetUser(string email, string password)
 		{
@@ -26,7 +25,7 @@ namespace WorkPlanner.DAL
 			{
 				MySqlCommand command = new MySqlCommand("select user_id, role from users where email=@Email and `password`=@Password", conn);
 				command.Parameters.AddWithValue("Email", email);
-				command.Parameters.AddWithValue("Password", password);
+				command.Parameters.AddWithValue("Password", SecurityHelper.CalculatePasswordHash(password));
 				conn.Open();
 				var reader = command.ExecuteReader();
 				while (reader.Read())
