@@ -30,6 +30,16 @@
         return curDate + " " + hours + ":" + minutes + ":" + seconds;
     }
 
+    const groupBy = (array, key) => {
+        return array.reduce((result, currentValue) => {
+           (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+            );           
+            return result;
+        }, {}); 
+    };
+
+
 
     $("#datepicker").datepicker({
         format: "yyyy-mm-dd",
@@ -42,11 +52,11 @@
     $("#datepicker").val(today);
 
     $("#submit").click(function () {
-        var userId = $("#employee").val();
+        var userIds = $("#employee").val();
         var date = $("#datepicker").val();
         var all = 0;
         $.ajax({
-            url: '?handler=WorkPlans&userId=' + userId + '&date=' + date +'&all='+all,
+            url: '?handler=WorkPlans&userIds=' + userIds + '&date=' + date,
             type: 'get',
             contentType: 'application/json; charset=utf-8',
             headers: {
@@ -55,23 +65,46 @@
         }).done(function (result) {
             result = JSON.parse(result);
             if (result.Status == 1) {
-                $("tbody").empty();
+                $("table").empty();
                 if (result.Results.length == 0) {
                     toastr.info("No data found.");
                 }
                 else {
+                    $("tbody").empty();
+                    $("thead").empty();
                     var html = "";
-                    for (var i = 0; i < result.Results.length; i++) {
-                        html += "<tr>" +
-                            "<td>" + result.Results[i].EmployeeName + "</td>" +
-                            "<td>" + result.Results[i].ProjectName + "</td>" +
-                            "<td>" + result.Results[i].TaskDetails + "</td>" +
-                            "<td>" + result.Results[i].EstimatedHours + "</td>" +
-                            "<td>" + result.Results[i].PineStemTaskID + "</td>" +
-                            "<td>" + formatDate(result.Results[i].CreatedOn) + "</td>" +
-                            "</tr>";
+                    var html1 = "";
+                    var final = "";
+                    var UserIds = groupBy(result.Results, 'UserId');
+                    console.log(UserIds);
+
+                    for (var i = 0; i < UserIds.length; i++) {
+
+                        html += "<thead class=" + "thead-dark work-plans" + "><tr>" +
+                            "<th>Employee Name</th>" +
+                            "<th>Project</th>" +
+                            "<th>Task</th>" +
+                            "<th>Estimated hours</th>" +
+                            "<th>Pinestem task id</th>" +
+                            "<th>CreatedOn</th></tr></thead>";
+
+                        html1 += " <tbody><tr>" +
+                            "<td>" + UserIds[i].EmployeeName + "</td>" +
+                            "<td>" + UserIds[i].ProjectName + "</td>" +
+                            "<td>" + UserIds[i].TaskDetails + "</td>" +
+                            "<td>" + UserIds[i].EstimatedHours + "</td>" +
+                            "<td>" + UserIds[i].PineStemTaskID + "</td>" +
+                            "<td>" + formatDate(UserIds[i].CreatedOn) + "</td>" +
+                            "</tr></tbody>";
+
+                        final = html + html1;
+
+                        $("table").append(final);
+                        html = '';
+                        html1 = '';
+                        final = '';
+
                     }
-                    $("tbody.work-plans").append(html);
                 }
 
             }
@@ -81,9 +114,14 @@
         });
     });
 
-    $('#employee').multiselect({
-        includeSelectAllOption: true
-    }); 
+    $(function () {
+        $('select[multiple]').multiselect({
+            columns: 1,
+            placeholder: 'Select Employee',
+            selectAll: true
+        });
+
+    });
 });
 
 

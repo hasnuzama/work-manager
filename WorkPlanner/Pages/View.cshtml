@@ -20,60 +20,63 @@
     <head>
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/datepicker.css" />
         <link rel="stylesheet" href="~/lib/toastr/toastr.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-select.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/jquery.multiselect.css" />
         <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
         <script src="~/lib/toastr/toastr.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap-select.js"></script>
+        <script src="~/lib/bootstrap/dist/js/jquery.multiselect.js"></script>
         <script src="~/js/view.js"></script>
     </head>
 
-<form>
-	<div class="row">
-		<!-- Emloyee dropdown -->
-		<div class="dropdown col-sm-2">
-			<select multiple="multiple" id="employee" name="employee" @disable >
-				
-				@if (Model.Users != null)
-				{
-					@for (int i = 0; i < Model.Users.Count; i++)
-					{
-						<option value="@Model.Users[i].UserId">@Model.Users[i].Name</option>
-					}
-				}
-			</select>
-		</div>
+    <form>
+        <div class="row">
+            <!-- Emloyee dropdown -->
+            <div class="dropdown col-sm-4">
+                <select  id="employee" name="employee" @disable multiple="multiple">
 
-		<!-- Date picker -->
-		<div class='col-sm-3'>
-			<div class="form-group">
-				<div class='input-group date'>
-					<input type='text' class="form-control" id='datepicker' name="datepicker" />
-					<span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
-					</span>
-				</div>
-			</div>
-		</div>
+                    @if (Model.Users != null)
+                    {
+                        @for (int i = 0; i < Model.Users.Count; i++)
+                        {
+                            <option value="@Model.Users[i].UserId">@Model.Users[i].Name</option>
+                        }
+                    }
+                </select>
+            </div>
 
-		<!-- Filter button -->
-		<div class='col-sm-1'>
-			<input type="button" id="submit" class="btn btn-primary" value="Submit">
-			<input name="__RequestVerificationToken" type="hidden" value="CfDJ8KW5cuB058RCnNyZSLI7AUjUAtTwe54jQ4Z9Goyn3WKPcpVFYSFUM5J-JDFC3E-MZIUcyR0UnbrvrC_sHv6MbUONStuIMhqDc7i00pQiGkrzf3hK6t5gZFVrjUpyAcargow4zvKU_ISjdPfoLTNF588" />
-		</div>
-	</div>
+            <!-- Date picker -->
+            <div class='col-sm-3'>
+                <div class="form-group">
+                    <div class='input-group date'>
+                        <input type='text' class="form-control" id='datepicker' name="datepicker" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-	<table class="table">
-		<thead class="thead-dark">
-            <tr>
-                <th scope="col">Employee Name</th>
-                <th scope="col">Project</th>
-                <th scope="col">Task</th>
-                <th scope="col">Estimated hours</th>
-                <th scope="col">Pinestem task id</th>
-                <th scope="col">Created on</th>
-            </tr>
-		</thead>
-		<tbody class="work-plans">
-		</tbody>
-	</table>
-</form>
+            <!-- Filter button -->
+            <div class='col-sm-1'>
+                <input type="button" id="submit" class="btn btn-primary" value="Submit">
+                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8KW5cuB058RCnNyZSLI7AUjUAtTwe54jQ4Z9Goyn3WKPcpVFYSFUM5J-JDFC3E-MZIUcyR0UnbrvrC_sHv6MbUONStuIMhqDc7i00pQiGkrzf3hK6t5gZFVrjUpyAcargow4zvKU_ISjdPfoLTNF588" />
+            </div>
+        </div>
+
+        <table class="table">
+            @*<thead class="thead-dark work-plans">
+                <tr>
+                    <th scope="col">Employee Name</th>
+                    <th scope="col">Project</th>
+                    <th scope="col">Task</th>
+                    <th scope="col">Estimated hours</th>
+                    <th scope="col">Pinestem task id</th>
+                    <th scope="col">Created on</th>
+                </tr>
+            </thead>
+            <tbody class="work-plans">
+            </tbody>*@
+
+        </table>
+
+      
+    </form>
